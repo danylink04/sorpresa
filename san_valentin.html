@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi persona favorita 💌</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff75a0, #8e2de2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            color: white;
+            text-align: center;
+        }
+
+        /* Animación de flores y corazones */
+        .decor {
+            position: absolute;
+            font-size: 24px;
+            animation: float 8s linear infinite;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(110vh) rotate(0deg); }
+            100% { transform: translateY(-10vh) rotate(360deg); }
+        }
+
+        /* El Sobre */
+        #container {
+            z-index: 10;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        #container:hover {
+            transform: scale(1.1);
+        }
+
+        .envelope {
+            font-size: 80px;
+            display: block;
+        }
+
+        .tap-text {
+            font-size: 18px;
+            margin-top: 10px;
+            background: rgba(0,0,0,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        /* Carta abierta */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            color: #d63384;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 300px;
+            animation: open 1s ease-out forwards;
+            display: none;
+        }
+
+        @keyframes open {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        h2 { margin-top: 0; }
+        p { font-size: 1.1rem; line-height: 1.5; color: #444; }
+        .footer { font-weight: bold; color: #ff4e8a; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <audio id="player" loop>
+        <source src="veo_en_ti_la_luz.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="container" onclick="mostrarCarta()">
+        <span class="envelope">💌</span>
+        <div class="tap-text">Toca para abrir</div>
+    </div>
+
+    <div id="carta" class="card">
+        <h2>✨ ¡Sorpresa! ✨</h2>
+        <p>Este San Valentín tienes una cita a las <b>4 pm</b> en <b>Circus Park</b>.</p>
+        <p>Prometo una tarde llena de juegos y muchísimos besitos.</p>
+        <div class="footer">Con amor, tu chicle ❤️</div>
+    </div>
+
+    <script>
+        // Crear flores y corazones aleatorios
+        const emojis = ['🌸', '✨', '❤️', '🌼'];
+        for (let i = 0; i < 30; i++) {
+            let el = document.createElement("div");
+            el.className = "decor";
+            el.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = Math.random() * 100 + "vw";
+            el.style.animationDuration = (4 + Math.random() * 6) + "s";
+            el.style.animationDelay = Math.random() * 5 + "s";
+            document.body.appendChild(el);
+        }
+
+        function mostrarCarta() {
+            const musica = document.getElementById("player");
+            musica.play();
+
+            document.getElementById("container").style.display = "none";
+            document.getElementById("carta").style.display = "block";
+        }
+    </script>
+</body>
+</html>
