@@ -35,7 +35,6 @@
         #container { z-index: 10; cursor: pointer; transition: transform 0.3s; }
         .envelope { font-size: 80px; display: block; }
 
-        /* Estilos de la Tarjeta y Pregunta */
         .card {
             background: rgba(255, 255, 255, 0.95);
             color: #d63384;
@@ -45,6 +44,7 @@
             max-width: 320px;
             display: none;
             position: relative;
+            z-index: 20;
         }
 
         h2 { margin-top: 0; color: #ff4e8a; }
@@ -55,6 +55,7 @@
             justify-content: center;
             gap: 15px;
             margin-top: 20px;
+            height: 50px;
         }
 
         button {
@@ -67,7 +68,7 @@
             transition: 0.3s;
         }
 
-        #btnSi { background-color: #ff4e8a; color: white; }
+        #btnSi { background-color: #ff4e8a; color: white; position: relative; }
         #btnNo { background-color: #ddd; color: #666; position: absolute; }
     </style>
 </head>
@@ -79,14 +80,14 @@
 
     <div id="container" onclick="abrirSobre()">
         <span class="envelope">💌</span>
-        <div style="background:rgba(0,0,0,0.2); border-radius:20px; padding:5px;">Toca para abrir</div>
+        <div style="background:rgba(0,0,0,0.2); border-radius:20px; padding:5px; margin-top:10px;">Toca para abrir</div>
     </div>
 
     <div id="pregunta" class="card">
         <h2>¿Quieres ser mi San Valentín? ❤️</h2>
-        <div class="btn-container" style="height: 50px;">
+        <div class="btn-container">
             <button id="btnSi" onclick="aceptar()">¡SÍ! 😍</button>
-            <button id="btnNo" onmouseover="moverBotonNo()">No 😢</button>
+            <button id="btnNo" onmouseover="moverBotonNo()" onclick="moverBotonNo()">No 😢</button>
         </div>
     </div>
 
@@ -99,7 +100,6 @@
     </div>
 
     <script>
-        // Animación de fondo
         const emojis = ['🌸', '✨', '❤️', '🌼'];
         for (let i = 0; i < 30; i++) {
             let el = document.createElement("div");
@@ -111,25 +111,30 @@
         }
 
         function abrirSobre() {
+            // Iniciar música
             document.getElementById("player").play();
+            // Ocultar sobre
             document.getElementById("container").style.display = "none";
+            // MOSTRAR PREGUNTA
             document.getElementById("pregunta").style.display = "block";
         }
 
         function moverBotonNo() {
             const btnNo = document.getElementById("btnNo");
-            const x = Math.random() * (window.innerWidth - btnNo.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btnNo.offsetHeight);
+            // Mover a posición aleatoria para que no lo puedan clickear
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
             btnNo.style.left = x + "px";
             btnNo.style.top = y + "px";
         }
 
         function aceptar() {
+            // Ocultar pregunta y mostrar invitación
             document.getElementById("pregunta").style.display = "none";
             document.getElementById("invitacion").style.display = "block";
             
-            // Efecto extra: lluvia de corazones al aceptar
-            for(let i=0; i<20; i++) {
+            // Lluvia de corazones
+            for(let i=0; i<30; i++) {
                 setTimeout(() => {
                     let heart = document.createElement("div");
                     heart.className = "decor";
