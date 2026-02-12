@@ -19,7 +19,6 @@
             text-align: center;
         }
 
-        /* Animación de flores y corazones */
         .decor {
             position: absolute;
             font-size: 24px;
@@ -33,50 +32,43 @@
             100% { transform: translateY(-10vh) rotate(360deg); }
         }
 
-        /* El Sobre */
-        #container {
-            z-index: 10;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
+        #container { z-index: 10; cursor: pointer; transition: transform 0.3s; }
+        .envelope { font-size: 80px; display: block; }
 
-        #container:hover {
-            transform: scale(1.1);
-        }
-
-        .envelope {
-            font-size: 80px;
-            display: block;
-        }
-
-        .tap-text {
-            font-size: 18px;
-            margin-top: 10px;
-            background: rgba(0,0,0,0.2);
-            padding: 5px 15px;
-            border-radius: 20px;
-        }
-
-        /* Carta abierta */
+        /* Estilos de la Tarjeta y Pregunta */
         .card {
             background: rgba(255, 255, 255, 0.95);
             color: #d63384;
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            max-width: 300px;
-            animation: open 1s ease-out forwards;
+            max-width: 320px;
             display: none;
+            position: relative;
         }
 
-        @keyframes open {
-            from { transform: scale(0); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        h2 { margin-top: 0; }
+        h2 { margin-top: 0; color: #ff4e8a; }
         p { font-size: 1.1rem; line-height: 1.5; color: #444; }
-        .footer { font-weight: bold; color: #ff4e8a; margin-top: 15px; }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 25px;
+            font-size: 16px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        #btnSi { background-color: #ff4e8a; color: white; }
+        #btnNo { background-color: #ddd; color: #666; position: absolute; }
     </style>
 </head>
 <body>
@@ -85,20 +77,29 @@
         <source src="veo_en_ti_la_luz.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="container" onclick="mostrarCarta()">
+    <div id="container" onclick="abrirSobre()">
         <span class="envelope">💌</span>
-        <div class="tap-text">Toca para abrir</div>
+        <div style="background:rgba(0,0,0,0.2); border-radius:20px; padding:5px;">Toca para abrir</div>
     </div>
 
-    <div id="carta" class="card">
-        <h2>✨ ¡Sorpresa! ✨</h2>
-        <p>Este San Valentín tienes una cita a las <b>4 pm</b> en <b>Circus Park</b>.</p>
-        <p>Prometo una tarde llena de juegos y muchísimos besitos.</p>
-        <div class="footer">Con amor, tu chicle ❤️</div>
+    <div id="pregunta" class="card">
+        <h2>¿Quieres ser mi San Valentín? ❤️</h2>
+        <div class="btn-container" style="height: 50px;">
+            <button id="btnSi" onclick="aceptar()">¡SÍ! 😍</button>
+            <button id="btnNo" onmouseover="moverBotonNo()">No 😢</button>
+        </div>
+    </div>
+
+    <div id="invitacion" class="card">
+        <h2>✨ ¡SIII! ✨</h2>
+        <p>Sabía que dirías que sí. 🥰</p>
+        <p>Tienes una cita a las <b>4 pm</b> en <b>Circus Park</b>.</p>
+        <p>Prepárate para muchos juegos y besitos.</p>
+        <div style="font-weight:bold; color:#ff4e8a; margin-top:15px;">Con amor, tu chicle ❤️</div>
     </div>
 
     <script>
-        // Crear flores y corazones aleatorios
+        // Animación de fondo
         const emojis = ['🌸', '✨', '❤️', '🌼'];
         for (let i = 0; i < 30; i++) {
             let el = document.createElement("div");
@@ -106,16 +107,38 @@
             el.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
             el.style.left = Math.random() * 100 + "vw";
             el.style.animationDuration = (4 + Math.random() * 6) + "s";
-            el.style.animationDelay = Math.random() * 5 + "s";
             document.body.appendChild(el);
         }
 
-        function mostrarCarta() {
-            const musica = document.getElementById("player");
-            musica.play();
-
+        function abrirSobre() {
+            document.getElementById("player").play();
             document.getElementById("container").style.display = "none";
-            document.getElementById("carta").style.display = "block";
+            document.getElementById("pregunta").style.display = "block";
+        }
+
+        function moverBotonNo() {
+            const btnNo = document.getElementById("btnNo");
+            const x = Math.random() * (window.innerWidth - btnNo.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btnNo.offsetHeight);
+            btnNo.style.left = x + "px";
+            btnNo.style.top = y + "px";
+        }
+
+        function aceptar() {
+            document.getElementById("pregunta").style.display = "none";
+            document.getElementById("invitacion").style.display = "block";
+            
+            // Efecto extra: lluvia de corazones al aceptar
+            for(let i=0; i<20; i++) {
+                setTimeout(() => {
+                    let heart = document.createElement("div");
+                    heart.className = "decor";
+                    heart.innerHTML = "❤️";
+                    heart.style.left = Math.random() * 100 + "vw";
+                    heart.style.fontSize = "40px";
+                    document.body.appendChild(heart);
+                }, i * 100);
+            }
         }
     </script>
 </body>
